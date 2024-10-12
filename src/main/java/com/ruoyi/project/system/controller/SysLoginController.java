@@ -28,15 +28,6 @@ import com.ruoyi.framework.web.domain.AjaxResult;
 @RestController
 public class SysLoginController
 {
-//    @Autowired
-//    private SysLoginService loginService;
-//
-//    @Autowired
-//    private ISysMenuService menuService;
-//
-//    @Autowired
-//    private SysPermissionService permissionService;
-
 
     @Autowired
     private CloudLoginUtil cloudLoginUtil;
@@ -103,28 +94,6 @@ public class SysLoginController
 
         return ajax;
     }
-//    @GetMapping("/login2")
-//    public AjaxResult login2(@RequestParam String username, @RequestParam String password) throws JsonProcessingException {
-//        AjaxResult ajax = AjaxResult.success();
-//        // 生成令牌
-////        String token = loginService.login(loginBody.getUsername(), loginBody.getPassword(), loginBody.getCode(),
-////                loginBody.getUuid());
-//        Map<String, Object> claims = new HashMap<>();
-//        claims.put("username", username);
-//        claims.put("password", password );
-////        String token = JwtUtils.getToken(claims);
-//
-//        CloudSession cloudSession = cloudLoginUtil.getCloudSession();
-//
-//
-//
-//        // 这里从用户权限表获取
-//        String userId = username;
-//        StpUtil.login(userId);
-//        StpUtil.getSession().set("cloudSession", cloudSession);
-//        ajax.put(Constants.TOKEN, StpUtil.getTokenValue());
-//        return ajax;
-//    }
 
     @GetMapping("/isLogin")
     public AjaxResult isLogin()
@@ -195,16 +164,5 @@ public class SysLoginController
         StpUtil.logout();
         return ajax;
     }
-    /**
-     * 获取路由信息
-     *
-     * @return 路由信息
-     */
-    @GetMapping("getRouters")
-    public AjaxResult getRouters()
-    {
-//        Long userId = SecurityUtils.getUserId();
-//        List<SysMenu> menus = menuService.selectMenuTreeByUserId(userId);
-        return AjaxResult.success("menuService.buildMenus(menus)");
-    }
+
 }
