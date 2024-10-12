@@ -156,7 +156,7 @@ public class SysLoginController
         return ajax;
     }
 
-    @SaCheckLogin
+
     @GetMapping("logout")
     public AjaxResult logout()
     {
