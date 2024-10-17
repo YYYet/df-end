@@ -8,9 +8,9 @@
     <version>3.8.8</version>
     <packaging>jar</packaging>
 
-    <name>ruoyi</name>
-    <url>http://www.ruoyi.vip</url>
-    <description>若依管理系统</description>
+    <name>df</name>
+    <url></url>
+    <description>管理系统</description>
 
     <parent>
         <groupId>org.springframework.boot</groupId>
@@ -217,6 +217,35 @@
             <artifactId>poi-ooxml</artifactId>
             <version>${poi.version}</version>
         </dependency>
+        <!-- 其他依赖 -->
+        <dependency>
+            <groupId>com.k3cloud</groupId>
+            <artifactId>k3cloud-webapi-sdk8.0.6</artifactId>
+            <version>1.0-SNAPSHOT</version>
+            <scope>system</scope>
+            <systemPath>${project.basedir}/lib/k3cloud-webapi-sdk8.0.6.jar</systemPath>
+        </dependency>
+        <dependency>
+            <groupId>com.junit</groupId>
+            <artifactId>junit-4.13.1</artifactId>
+            <version>1.0-SNAPSHOT</version>
+            <scope>system</scope>
+            <systemPath>${project.basedir}/lib/junit-4.13.1.jar</systemPath>
+        </dependency>
+        <dependency>
+            <groupId>com.hamcrest</groupId>
+            <artifactId>hamcrest-core-1.3</artifactId>
+            <version>1.0-SNAPSHOT</version>
+            <scope>system</scope>
+            <systemPath>${project.basedir}/lib/hamcrest-core-1.3.jar</systemPath>
+        </dependency>
+        <dependency>
+            <groupId>com.gson</groupId>
+            <artifactId>gson-2.8.0</artifactId>
+            <version>1.0-SNAPSHOT</version>
+            <scope>system</scope>
+            <systemPath>${project.basedir}/lib/gson-2.8.0.jar</systemPath>
+        </dependency>
 
 <!--        &lt;!&ndash; velocity代码生成使用模板 &ndash;&gt;-->
 <!--        <dependency>-->
@@ -262,7 +291,15 @@
 	                <fork>true</fork> <!-- 如果没有该配置，devtools不会生效 -->
 	            </configuration>
 	        </plugin>
-	    </plugins>
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-compiler-plugin</artifactId>
+                <configuration>
+                    <source>9</source>
+                    <target>9</target>
+                </configuration>
+            </plugin>
+        </plugins>
 	</build>
 
 	<repositories>

@@ -68,7 +68,34 @@ public class GlobalExceptionHandler
     public AjaxResult handleNotLoginException(NotLoginException e, HttpServletRequest request)
     {
         log.error(e.getMessage(), e);
-        return AjaxResult.error(401, e.getMessage());
+        // 判断场景值，定制化异常信息
+        String message = "";
+        if(e.getType().equals(NotLoginException.NOT_TOKEN)) {
+            message = "未能读取到有效 token";
+        }
+        else if(e.getType().equals(NotLoginException.INVALID_TOKEN)) {
+            message = "token 无效";
+        }
+        else if(e.getType().equals(NotLoginException.TOKEN_TIMEOUT)) {
+            message = "当前登录状态已过期";
+        }
+        else if(e.getType().equals(NotLoginException.BE_REPLACED)) {
+            message = "当前账号已在别处登录";
+            return AjaxResult.error(408, message);
+        }
+        else if(e.getType().equals(NotLoginException.KICK_OUT)) {
+            message = "token 已被踢下线";
+        }
+        else if(e.getType().equals(NotLoginException.TOKEN_FREEZE)) {
+            message = "token 已被冻结";
+        }
+        else if(e.getType().equals(NotLoginException.NO_PREFIX)) {
+            message = "未按照指定前缀提交 token";
+        }
+        else {
+            message = "当前会话未登录";
+        }
+        return AjaxResult.error(401, message);
     }
     /**
      * 业务异常

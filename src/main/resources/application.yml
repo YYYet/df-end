@@ -31,6 +31,7 @@ server:
       # Tomcat启动初始化的线程数，默认值10
       min-spare: 100
 
+
 ############## Sa-Token 配置 (文档: https://sa-token.cc) ##############
 sa-token:
   # token 名称（同时也是 cookie 名称）
