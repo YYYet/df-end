@@ -7,6 +7,7 @@ import lombok.Data;
 public class CloudUser {
     private CloudSession cloudSession;
     private String userName;
+    private String id;
     private String loginName;
     private String phone;
     private String email;

@@ -72,5 +72,27 @@ public class CloudLoginUtil {
         }
 
     }
+    public boolean execSqlNoReturn(String sql) throws UnsupportedEncodingException, JsonProcessingException {
+        CloudDataSource source = new CloudDataSource();
+        source.setUrl(config.getUrl());
+        source.setDbId(config.getDbId());
+        source.setLoginName(config.getUsername());
+        source.setPassword(config.getPassword());
+//        CloudHelper cloud = new CloudHelper(source);
+        byte[] bytes = sql.getBytes("UTF-8");
+        String sqlText = Base64.getEncoder().encodeToString(bytes);
+        CloudSession cloudSession = (CloudSession)StpUtil.getSession().get("cloudSession");
+        CloudConnect cloudConnect = new CloudConnect(source.getUrl(),
+                cloudSession.getSessionValue(),
+                cloudSession.getSessionValueAspnet());
+        String result = cloudConnect.requestWebAPI(CloudWebAPIEx.SQL_QUERY.getUrl(), sqlText);
 
+        DataResult dataResult =  parseCustomResult(result);
+        if(dataResult.isSuccess()) {
+            return dataResult.isSuccess();
+        } else {
+            throw new RuntimeException(dataResult.getMessage());
+        }
+
+    }
 }

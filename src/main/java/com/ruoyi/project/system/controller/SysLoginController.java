@@ -79,6 +79,9 @@ public class SysLoginController
             if (Objects.nonNull(stringObjectMap.get("FJOINDATE"))){
                 cloudUser.setJoinDate(stringObjectMap.get("FJOINDATE").toString());
             }
+            if (Objects.nonNull(stringObjectMap.get("FID"))){
+                cloudUser.setId(stringObjectMap.get("FID").toString());
+            }
             cloudUser.setUserNo(stringObjectMap.get("FSTAFFNUMBER").toString());
             cloudUser.setUseOrgId(stringObjectMap.get("FUSEORGID").toString());
             cloudUser.setCloudSession(cloudSession);
