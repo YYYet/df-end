@@ -5,7 +5,7 @@ public class SqlConst {
     根据卡号和密码查询用户
      */
     public final static String EMPINFO = "select FNAME,FMOBILE,FEMAIL,FJOINDATE,FSTAFFNUMBER,FUSEORGID " +
-            "from T_HR_EMPINFO, T_HR_EMPINFO_L where T_HR_EMPINFO.FDOCUMENTSTATUS = 'C' AND T_HR_EMPINFO.fid = T_HR_EMPINFO_L.FID AND FCARDNO = %s and FPASSWORD = %s";
+            "from T_HR_EMPINFO, T_HR_EMPINFO_L where T_HR_EMPINFO.FDOCUMENTSTATUS = 'C' AND T_HR_EMPINFO.fid = T_HR_EMPINFO_L.FID AND FCARDNO = '%s' and FPASSWORD = '%s'";
 
     public final static String PERMISSIONS = "select DISTINCT T_UC_BarcodeMenuItem.FID AS MENUFID,T_UC_BarcodeMenuItem.FNUMBER AS MENUNUMBER, T_UC_BarcodeMenuItem_L.FNAME AS MENUNAME," +
             "T_HR_EMPINFO.FCARDNO  from T_UC_BarcodeAuth " +
