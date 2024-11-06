@@ -61,6 +61,7 @@ public class SysLoginController
         try {
             String formatSql = String.format(SqlConst.EMPINFO, loginBody.getUsername(), loginBody.getPassword());
             maps = cloudLoginUtil.execSql(formatSql);
+            System.out.println(maps);
         }catch (Exception e){
             e.printStackTrace();
             throw new Exception("账号或者密码错误");

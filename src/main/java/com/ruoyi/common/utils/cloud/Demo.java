@@ -1,6 +1,8 @@
 package com.ruoyi.common.utils.cloud;
 
 import cn.hutool.core.codec.Base64;
+import cn.hutool.core.date.DateUtil;
+import cn.hutool.core.date.Week;
 import cn.hutool.core.text.StrFormatter;
 import cn.hutool.core.util.StrUtil;
 import com.fasterxml.jackson.core.JsonProcessingException;
@@ -9,6 +11,7 @@ import com.ruoyi.common.utils.cloud.api.CloudHelper;
 import com.ruoyi.common.utils.cloud.api.CloudInvoker;
 import com.ruoyi.common.utils.cloud.consts.SqlConst;
 import com.ruoyi.common.utils.cloud.util.CloudDataSource;
+import com.ruoyi.common.utils.cloud.util.CloudLoginUtil;
 
 
 import java.io.UnsupportedEncodingException;
@@ -172,12 +175,130 @@ public class Demo {
         fa.put("cardNo", "18888888888");
         fa.put("materialId", 105108);
         result =StrUtil.format(sql7, fa);
-        List<List<Map<String, Object>>> data0 = cloud.sqlQuery(sql111);//查询sql
-        System.out.println(data0);
-        List<Map<String, Object>> maps = data0.get(0);
-        for (Map<String, Object> map : maps) {
-            System.out.println(map);
+
+//        UNW_t_Cust100006.FBILLNO as number,F_UC_WL as materialId, " +
+//                "UNW_t_Cust_Entry100009.F_UC_WL.fname as materialName, " +
+//                "UNW_t_Cust100006.F_UC_YHZQ as day," +
+//                "UNW_t_Cust_Entry100009.F_UC_WL.FMaterialGroup as groupName, " +
+//                "UNW_t_Cust_Entry100009.F_UC_WL.FMaterialGroup.id as groupId
+//        "FBILLNO as number," +
+//                "F_UC_WL as materialId, F_UC_WL.fname as materialName, F_UC_YHZQ as day," +
+//                "F_UC_WL.FMaterialGroup as groupName, F_UC_WL.FMaterialGroup.id as groupId " +
+//                "left  JOIN t_bd_material_l on t_bd_material_l.FMATERIALID = t_bd_material.FMATERIALID " +
+//                "left  JOIN t_bd_material_p on t_bd_material_p.FMATERIALID = t_bd_material.FMATERIALID " +
+//                "left  JOIN T_BD_MATERIALBASE on T_BD_MATERIALBASE.FMATERIALID = t_bd_material.FMATERIALID " +
+//                "left  JOIN T_BD_UNIT_L on T_BD_UNIT_L.FUNITID = T_BD_MATERIALBASE.FBaseUnitId " +
+//                "left  JOIN UNW_t_Cust100004 on UNW_t_Cust100004.F_UC_WL1 = T_BD_MATERIALBASE.FMATERIALID and UNW_t_Cust100004.F_UC_CARDNO = '18888888888' " +
+//                ""
+
+//        t_bd_material.FMATERIALID as id," +
+//            "T_BD_UNIT_L.FNAME as unit," +
+//            "T_BD_MATERIALBASE.FBaseUnitId as unitID," +
+//            "t_bd_material.FMaterialGroup as groupId," +
+//            "t_bd_material.FNumber as number," +
+//            "t_bd_material_l.FName as name," +
+//            "t_bd_material.FCreateOrgId as createOrgId," +
+//            "ISNULL(UNW_t_Cust100004.F_UC_QTY1, 0) as nums," +
+//            "t_bd_material.FUseOrgId as useOrgId from t_bd_material " +
+        String sql333 = "select t_bd_material.FMATERIALID as id, " +
+                "T_BD_UNIT_L.FNAME as unit, " +
+                "T_BD_MATERIALBASE.FBaseUnitId as unitID, " +
+                "t_bd_material.FMaterialGroup as groupId, " +
+                "t_bd_material.FNumber as number, " +
+                "t_bd_material_l.FName as name, " +
+                "t_bd_material.FCreateOrgId as createOrgId, " +
+                "ISNULL(UNW_t_Cust100004.F_UC_QTY1, 0) as nums, " +
+                "t_bd_material.FUseOrgId as useOrgId " +
+                "from UNW_t_Cust_Entry100009 " +
+                "left JOIN UNW_t_Cust100006 on UNW_t_Cust100006.fid = UNW_t_Cust_Entry100009.fid " +
+                "left  JOIN t_bd_material on t_bd_material.FMATERIALID = UNW_t_Cust_Entry100009.F_UC_WL " +
+                "left  JOIN t_bd_material_l on t_bd_material_l.FMATERIALID = UNW_t_Cust_Entry100009.F_UC_WL " +
+                "left  JOIN t_bd_material_p on t_bd_material_p.FMATERIALID = UNW_t_Cust_Entry100009.F_UC_WL " +
+                "left  JOIN T_BD_MATERIALBASE on T_BD_MATERIALBASE.FMATERIALID = UNW_t_Cust_Entry100009.F_UC_WL " +
+                "left  JOIN T_BD_UNIT_L on T_BD_UNIT_L.FUNITID = T_BD_MATERIALBASE.FBaseUnitId " +
+                "left  JOIN UNW_t_Cust100004 on UNW_t_Cust100004.F_UC_WL1 = T_BD_MATERIALBASE.FMATERIALID and UNW_t_Cust100004.F_UC_CARDNO = '{cardNo}}' " +
+                "WHERE t_bd_material.FUseOrgId = '{useOrgId}' and FMaterialGroup= '{groupId}' " +
+                "ORDER BY t_bd_material.FMATERIALID " +
+                "OFFSET ({pageNumber} - 1) * {pageSize} ROWS " +
+                "FETCH NEXT {pageSize} ROWS ONLY";
+        String sql2222 = "select * " +
+                " from UNW_t_Cust_Entry100009" +
+                " left JOIN UNW_t_Cust100006 on UNW_t_Cust100006.fid = UNW_t_Cust_Entry100009.fid";
+
+//        String sss = "select FBILLNO as number," +
+//                "UNW_t_Cust_Entry100009.F_UC_NAME as name, UNW_t_Cust_Entry100009.F_UC_YHZQ as day, " +
+//                "F_UC_MD.FNUMBER as orgNumber, F_UC_MDNAME as orgName," +
+//                "UNW_t_Cust_Entry100009.F_UC_YHLX as typeId, F_UC_YHLX.FNAME as typeName, F_UNW_USERID_C1C.fname as auditor " +
+//                "from UNW_t_Cust_Entry100009 " +
+//                "left JOIN UNW_t_Cust_Entry100008 on UNW_t_Cust_Entry100008.fid = UNW_t_Cust_Entry100009.fid ";
+        String sss = "select UNW_t_Cust100006.F_UC_NAME as name," +
+                "UNW_t_Cust100006.F_UC_YHLX as typeId," +
+                "UNW_t_Cust100005_l.FNAME as typeName," +
+                "UNW_t_Cust100006.F_UNW_USERID_C1C as auditorId," +
+                "T_SEC_user.FNAME as auditor," +
+                "UNW_t_Cust100006.F_UC_YHZQ as day," +
+                "UNW_t_Cust100006.F_UC_QSSJ," +
+                "UNW_t_Cust_Entry100008.F_UC_MD as orgId," +
+                "T_ORG_Organizations_l.FNAME as orgName," +
+                "UNW_t_Cust100006.F_UC_JZSJ from UNW_t_Cust100006 " +
+                "inner JOIN UNW_t_Cust_Entry100008 on UNW_t_Cust_Entry100008.fid = UNW_t_Cust100006.fid and UNW_t_Cust_Entry100008.F_UC_MD = 1 "+
+                "left JOIN UNW_t_Cust100005_l on UNW_t_Cust100005_l.FID = UNW_t_Cust100006.F_UC_YHLX and UNW_t_Cust100005_l.FLOCALEID = '2052'"+
+                "left JOIN T_SEC_user on T_SEC_user.FUSERID = UNW_t_Cust100006.F_UNW_UserId_c1c "+
+                "left JOIN T_ORG_Organizations_l on  T_ORG_Organizations_l.FLOCALEID = '2052' " +
+                "and T_ORG_Organizations_l.FOrgID = 1 " +
+                "where UNW_t_Cust100006.F_UC_W3 = 1 and ( CAST(UNW_t_Cust100006.F_UC_QSSJ AS TIME) <= CAST('2024-11-06 21:00' AS TIME)\n" +
+                "AND CAST(UNW_t_Cust100006.F_UC_JZSJ AS TIME) >= CAST('2024-11-06 21:00' AS TIME))";
+        String aaa = "select * from UNW_t_Cust100006";
+        List<List<Map<String, Object>>> data0 = cloud.sqlQuery(sss);//查询sql
+        List<List<Map<String, Object>>> data1 = cloud.sqlQuery(aaa);//查询sql
+//        System.out.println("data1 "+data1);
+//        System.out.println("data0 "+data0);
+//        List<Map<String, Object>> maps = data0.get(0);
+//        for (Map<String, Object> map : maps) {
+//            System.out.println(map);
+//        }
+
+//        Map<String, Object> fF = new HashMap<>();
+//        Week week = DateUtil.thisDayOfWeekEnum();
+//        int nowWeek = week.getIso8601Value();
+//        String nowTime = DateUtil.now();
+//        fF.put("useOrgId", 1);
+//        fF.put("nowTime", nowTime);
+//        fF.put("nowWeek", nowWeek);
+//        System.out.println("f "+ fF);
+//        String sql32323 = StrUtil.format(SqlConst.TEMPLATE_LIMIT, fF);
+//        System.out.println("sql "+ sql32323);
+////        List<Map<String, Object>> maps = new CloudLoginUtil().execSql(StrUtil.format(SqlConst.TEMPLATE_LIMIT, f));
+//        System.out.println(cloud.sqlQuery(sql32323).get(0));
+
+
+
+        Map<String, Object> f2 = new HashMap<>();
+        f2.put("cardNo", "18888888888");
+        f2.put("useOrgId", 1);
+        f2.put("groupId", 105454);
+        f2.put("pageNumber", 1);
+        f2.put("pageSize", 10);
+        f2.put("billNo", 4);
+        String formatSql = StrUtil.format(SqlConst.MATERIAL_LIMIT_V2, f2);
+        List<Map<String, Object>> maps = cloud.sqlQuery(formatSql).get(0);
+        for (int i = 0; i < maps.size(); i++) {
+            System.out.println(maps.get(i));
         }
+        System.out.println("===============================================");
+//        System.out.println(cloud.sqlQuery(formatSql).get(0));
+        System.out.println(cloud.sqlQuery("select * from UNW_t_Cust100004").get(0));
+        for (Map<String, Object> stringObjectMap : cloud.sqlQuery("select UNW_t_Cust_Entry100009.F_UC_WL from UNW_t_Cust100006 " +
+                "inner JOIN UNW_t_Cust_Entry100009 on UNW_t_Cust100006.fid = UNW_t_Cust_Entry100009.fid and UNW_t_Cust100006.FBILLNO = 4 " +
+                "left  JOIN UNW_t_Cust100004 on  UNW_t_Cust_Entry100009.F_UC_WL = UNW_t_Cust100004.F_UC_WL1  and UNW_t_Cust100004.F_UC_CARDNO = '18888888888' "
+                ).get(0)) {
+            System.out.println(stringObjectMap);
+        }
+
+
+
+
+
 
 //        List<List<Map<String, Object>>> data1 = cloud.sqlQuery("select * from T_UC_BarcodeAuth");//查询sql
 //        List<List<Map<String, Object>>> data2 = cloud.sqlQuery(sql2);//查询sql

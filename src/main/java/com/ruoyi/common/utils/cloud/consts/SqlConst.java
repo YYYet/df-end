@@ -38,6 +38,73 @@ public class SqlConst {
             "ORDER BY t_bd_material.FMATERIALID " +
             "OFFSET ({pageNumber} - 1) * {pageSize} ROWS " +
             "FETCH NEXT {pageSize} ROWS ONLY";
+    public final static String MATERIAL_LIMIT_V2 = "select " +
+//            "t_bd_material.FMATERIALID as id, " +
+            "T_BD_UNIT_L.FNAME as unit, " +
+            "T_BD_MATERIALBASE.FBaseUnitId as unitID, " +
+            "t_bd_material.FMaterialGroup as groupId, " +
+            "t_bd_material.FNumber as number, " +
+            "t_bd_material_l.FName as name, " +
+            "t_bd_material.FCreateOrgId as createOrgId, " +
+//            "UNW_t_Cust100004.F_UC_WL1, " +
+            "UNW_t_Cust_Entry100009.F_UC_WL as id ," +
+            "ISNULL(UNW_t_Cust100004.F_UC_QTY1, 0) as nums, " +
+            "t_bd_material.FUseOrgId as useOrgId " +
+            "from UNW_t_Cust_Entry100009 " +
+            "inner JOIN UNW_t_Cust100006 on UNW_t_Cust100006.fid = UNW_t_Cust_Entry100009.fid and UNW_t_Cust100006.FBILLNO = {billNo} " +
+            "left  JOIN t_bd_material on t_bd_material.FMATERIALID = UNW_t_Cust_Entry100009.F_UC_WL " +
+            "left  JOIN t_bd_material_l on t_bd_material_l.FMATERIALID = UNW_t_Cust_Entry100009.F_UC_WL and t_bd_material_l.FLOCALEID = '2052' " +
+//            "left  JOIN t_bd_material_p on t_bd_material_p.FMATERIALID = UNW_t_Cust_Entry100009.F_UC_WL " +
+            "left  JOIN T_BD_MATERIALBASE on T_BD_MATERIALBASE.FMATERIALID = UNW_t_Cust_Entry100009.F_UC_WL " +
+            "left  JOIN T_BD_UNIT_L on T_BD_UNIT_L.FUNITID = T_BD_MATERIALBASE.FBaseUnitId and T_BD_UNIT_L.FLOCALEID = '2052' " +
+            "left  JOIN UNW_t_Cust100004 on  UNW_t_Cust_Entry100009.F_UC_WL = UNW_t_Cust100004.F_UC_WL1  and UNW_t_Cust100004.F_UC_CARDNO = '{cardNo}' " +
+            "WHERE t_bd_material.FUseOrgId = '{useOrgId}' and FMaterialGroup= '{groupId}' " +
+            "ORDER BY t_bd_material.FMATERIALID " +
+            "OFFSET ({pageNumber} - 1) * {pageSize} ROWS " +
+            "FETCH NEXT {pageSize} ROWS ONLY";
+
+    public final static String MATERIAL_LIMIT_MATCH_NAME_V2 = "select " +
+//            "t_bd_material.FMATERIALID as id, " +
+            "T_BD_UNIT_L.FNAME as unit, " +
+            "T_BD_MATERIALBASE.FBaseUnitId as unitID, " +
+            "t_bd_material.FMaterialGroup as groupId, " +
+            "t_bd_material.FNumber as number, " +
+            "t_bd_material_l.FName as name, " +
+            "t_bd_material.FCreateOrgId as createOrgId, " +
+//            "UNW_t_Cust100004.F_UC_WL1, " +
+            "UNW_t_Cust_Entry100009.F_UC_WL as id ," +
+            "ISNULL(UNW_t_Cust100004.F_UC_QTY1, 0) as nums, " +
+            "t_bd_material.FUseOrgId as useOrgId " +
+            "from UNW_t_Cust_Entry100009 " +
+            "inner JOIN UNW_t_Cust100006 on UNW_t_Cust100006.fid = UNW_t_Cust_Entry100009.fid and UNW_t_Cust100006.FBILLNO = {billNo} " +
+            "left  JOIN t_bd_material on t_bd_material.FMATERIALID = UNW_t_Cust_Entry100009.F_UC_WL " +
+            "left  JOIN t_bd_material_l on t_bd_material_l.FMATERIALID = UNW_t_Cust_Entry100009.F_UC_WL and t_bd_material_l.FLOCALEID = '2052' " +
+//            "left  JOIN t_bd_material_p on t_bd_material_p.FMATERIALID = UNW_t_Cust_Entry100009.F_UC_WL " +
+            "left  JOIN T_BD_MATERIALBASE on T_BD_MATERIALBASE.FMATERIALID = UNW_t_Cust_Entry100009.F_UC_WL " +
+            "left  JOIN T_BD_UNIT_L on T_BD_UNIT_L.FUNITID = T_BD_MATERIALBASE.FBaseUnitId and T_BD_UNIT_L.FLOCALEID = '2052' " +
+            "left  JOIN UNW_t_Cust100004 on  UNW_t_Cust_Entry100009.F_UC_WL = UNW_t_Cust100004.F_UC_WL1  and UNW_t_Cust100004.F_UC_CARDNO = '{cardNo}' " +
+            "WHERE t_bd_material_l.FName like '%{materialName}%' ";
+
+
+    public final static String TEMPLATE_LIMIT = "select UNW_t_Cust100006.F_UC_NAME as name," +
+            "UNW_t_Cust100006.F_UC_YHLX as typeId," +
+            "UNW_t_Cust100005_l.FNAME as typeName," +
+            "UNW_t_Cust100006.F_UNW_USERID_C1C as auditorId," +
+            "T_SEC_user.FNAME as auditor," +
+            "UNW_t_Cust100006.FBILLNO as billNumber," +
+            "UNW_t_Cust100006.F_UC_YHZQ as day," +
+            "UNW_t_Cust100006.F_UC_QSSJ as startTime," +
+            "UNW_t_Cust_Entry100008.F_UC_MD as orgId," +
+            "T_ORG_Organizations_l.FNAME as orgName," +
+            "UNW_t_Cust100006.F_UC_JZSJ as endTime " +
+            "from UNW_t_Cust100006 " +
+            "inner JOIN UNW_t_Cust_Entry100008 on UNW_t_Cust_Entry100008.fid = UNW_t_Cust100006.fid and UNW_t_Cust_Entry100008.F_UC_MD = {useOrgId} "+
+            "left JOIN UNW_t_Cust100005_l on UNW_t_Cust100005_l.FID = UNW_t_Cust100006.F_UC_YHLX and UNW_t_Cust100005_l.FLOCALEID = '2052'"+
+            "left JOIN T_SEC_user on T_SEC_user.FUSERID = UNW_t_Cust100006.F_UNW_UserId_c1c "+
+            "left JOIN T_ORG_Organizations_l on  T_ORG_Organizations_l.FLOCALEID = '2052' " +
+            "and T_ORG_Organizations_l.FOrgID = {useOrgId} " +
+            "where UNW_t_Cust100006.F_UC_W{nowWeek} = 1 and UNW_t_Cust100006.FDOCUMENTSTATUS = 'C' and ( CAST(UNW_t_Cust100006.F_UC_QSSJ AS TIME) <= CAST('{nowTime}' AS TIME)\n" +
+            "AND CAST(UNW_t_Cust100006.F_UC_JZSJ AS TIME) >= CAST('{nowTime}' AS TIME))";
 
     public final static String MATERIAL_LIMIT_MATCH_NAME = "select t_bd_material.FMATERIALID as id," +
             "T_BD_UNIT_L.FNAME as unit," +
