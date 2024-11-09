@@ -236,6 +236,7 @@ public class SysMaterialController {
         ajax.put("result", maps);
         return ajax;
     }
+
     @SaCheckLogin
     @GetMapping("/getMaterialByNameV3")
     public AjaxResult getMaterialByNameV3(@RequestParam String name,@RequestParam String billNo, @RequestParam Integer page,
