@@ -281,17 +281,21 @@ public class Demo {
         f2.put("pageSize", 10);
         f2.put("billNo", 4);
         String formatSql = StrUtil.format(SqlConst.MATERIAL_LIMIT_V2, f2);
-        List<Map<String, Object>> maps = cloud.sqlQuery(formatSql).get(0);
-        for (int i = 0; i < maps.size(); i++) {
-            System.out.println(maps.get(i));
-        }
-        System.out.println("===============================================");
-//        System.out.println(cloud.sqlQuery(formatSql).get(0));
-        System.out.println(cloud.sqlQuery("select * from UNW_t_Cust100004").get(0));
-        for (Map<String, Object> stringObjectMap : cloud.sqlQuery("select UNW_t_Cust_Entry100009.F_UC_WL from UNW_t_Cust100006 " +
-                "inner JOIN UNW_t_Cust_Entry100009 on UNW_t_Cust100006.fid = UNW_t_Cust_Entry100009.fid and UNW_t_Cust100006.FBILLNO = 4 " +
-                "left  JOIN UNW_t_Cust100004 on  UNW_t_Cust_Entry100009.F_UC_WL = UNW_t_Cust100004.F_UC_WL1  and UNW_t_Cust100004.F_UC_CARDNO = '18888888888' "
-                ).get(0)) {
+//        List<Map<String, Object>> maps = cloud.sqlQuery(formatSql).get(0);
+//        for (int i = 0; i < maps.size(); i++) {
+//            System.out.println(maps.get(i));
+//        }
+//        System.out.println("===============================================");
+////        System.out.println(cloud.sqlQuery(formatSql).get(0));
+//        System.out.println(cloud.sqlQuery("select * from UNW_t_Cust100004").get(0));
+//        for (Map<String, Object> stringObjectMap : cloud.sqlQuery("select UNW_t_Cust_Entry100009.F_UC_WL from UNW_t_Cust100006 " +
+//                "inner JOIN UNW_t_Cust_Entry100009 on UNW_t_Cust100006.fid = UNW_t_Cust_Entry100009.fid and UNW_t_Cust100006.FBILLNO = 4 " +
+//                "left  JOIN UNW_t_Cust100004 on  UNW_t_Cust_Entry100009.F_UC_WL = UNW_t_Cust100004.F_UC_WL1  and UNW_t_Cust100004.F_UC_CARDNO = '18888888888' "
+//                ).get(0)) {
+//            System.out.println(stringObjectMap);
+//        }
+
+        for (Map<String, Object> stringObjectMap : cloud.sqlQuery("select * from T_BD_MATERIALGROUP").get(0)) {
             System.out.println(stringObjectMap);
         }
 

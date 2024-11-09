@@ -55,6 +55,8 @@ kingdee:
   db-id: 6705e2449ceff8
   username: 17336268371
   password: 123@.com
+  # 配送中心编码
+  distribution-center-code: 100
 
 
 # 日志配置

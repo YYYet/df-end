@@ -63,6 +63,9 @@ public class CloudLoginUtil {
                 cloudSession.getSessionValueAspnet());
         String result = cloudConnect.requestWebAPI(CloudWebAPIEx.SQL_QUERY.getUrl(), sqlText);
 
+        // 这里如果报session过期可以重新调用登录
+        // TODO:
+
         DataResult dataResult =  parseCustomResult(result);
         if(dataResult.isSuccess()) {
             List<List<Map<String, Object>>> list = (List<List<Map<String, Object>>>)dataResult.getData();

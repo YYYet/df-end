@@ -12,4 +12,5 @@ public class KingdeeCloudConfig {
     public String dbId;
     public String username;
     public String password;
+    public String distributionCenterCode;
 }

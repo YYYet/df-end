@@ -3,7 +3,12 @@ package com.ruoyi.project.system.controller;
 import cn.dev33.satoken.annotation.SaCheckLogin;
 import cn.dev33.satoken.session.SaSession;
 import cn.dev33.satoken.stp.StpUtil;
+import cn.hutool.core.collection.CollUtil;
 import cn.hutool.core.date.DateUtil;
+import cn.hutool.core.lang.tree.Tree;
+import cn.hutool.core.lang.tree.TreeNode;
+import cn.hutool.core.lang.tree.TreeNodeConfig;
+import cn.hutool.core.lang.tree.TreeUtil;
 import cn.hutool.core.util.RandomUtil;
 import cn.hutool.core.util.StrUtil;
 import cn.hutool.json.JSON;
@@ -36,8 +41,6 @@ public class SysMaterialController {
     K3CloudApi api;
     @Resource
     CloudLoginUtil cloudLoginUtil;
-
-
     @SaCheckLogin
     @GetMapping("/getTabs")
     public AjaxResult getTabs() throws Exception {
@@ -54,7 +57,95 @@ public class SysMaterialController {
 //                "}";
         HashMap map = new HashMap();
         map.put("FormId", "SAL_MATERIALGROUP");
+        map.put("FieldKeys", "fid as id,fname as name,fparentId as parent");
+
+        String result = api.billQuery(JSONUtil.toJsonStr(map));
+
+
+        JSON entries = JSONUtil.parse(result);
+        JSONArray objects = JSONUtil.parseArray(entries);
+        List<TreeNode<String>> nodeList = CollUtil.newArrayList();
+        for (int i = 0; i < objects.size(); i++) {
+            JSONObject item = objects.getJSONObject(i);
+            HashMap<String, Object> extra = new HashMap<>();
+            extra.put("seq", i);
+            nodeList.add(new TreeNode<>(item.getStr("id"), item.getStr("parent"),
+                    item.getStr("name"), item.getStr("parent")).setExtra(extra));
+        }
+        List<Tree<String>> treeList = TreeUtil.build(nodeList, "0");
+
+
+
+        ajax.put("result", treeList);
+        return ajax;
+    }
+    @SaCheckLogin
+    @GetMapping("/getTabsByGroupId")
+    public AjaxResult getTabsByGroupId(@RequestParam String pid) throws Exception {
+        AjaxResult ajax = AjaxResult.success();
+        var api = new K3CloudApi();
+//        String json = "{\n" +
+//                "    \"FormId\": \"SAL_MATERIALGROUP\",\n" +
+//                "    \"FieldKeys\": \"fid,fname\",\n" +
+//                "    \"OrderString\": \"\",\n" +
+//                "    \"TopRowCount\": 0,\n" +
+//                "    \"StartRow\": 0,\n" +
+//                "    \"Limit\": 2000,\n" +
+//                "    \"SubSystemId\": \"\"\n" +
+//                "}";
+        HashMap map = new HashMap();
+        map.put("FormId", "SAL_MATERIALGROUP");
         map.put("FieldKeys", "fid as id,fname as name");
+        map.put("FilterString", "FPARENTID = "+pid);
+
+        String result = api.billQuery(JSONUtil.toJsonStr(map));
+
+        ajax.put("result", JSONUtil.parse(result));
+        return ajax;
+    }
+    @SaCheckLogin
+    @GetMapping("/getChildTabs")
+    public AjaxResult getChildTabs(@RequestParam String pid) throws Exception {
+        AjaxResult ajax = AjaxResult.success();
+        var api = new K3CloudApi();
+//        String json = "{\n" +
+//                "    \"FormId\": \"SAL_MATERIALGROUP\",\n" +
+//                "    \"FieldKeys\": \"fid,fname\",\n" +
+//                "    \"OrderString\": \"\",\n" +
+//                "    \"TopRowCount\": 0,\n" +
+//                "    \"StartRow\": 0,\n" +
+//                "    \"Limit\": 2000,\n" +
+//                "    \"SubSystemId\": \"\"\n" +
+//                "}";
+        HashMap map = new HashMap();
+        map.put("FormId", "SAL_MATERIALGROUP");
+        map.put("FieldKeys", "fid as id,fname as name");
+        map.put("FilterString", "FPARENTID = "+pid);
+
+        String result = api.billQuery(JSONUtil.toJsonStr(map));
+
+        ajax.put("result", JSONUtil.parse(result));
+        return ajax;
+    }
+
+    @SaCheckLogin
+    @GetMapping("/getParentTabs")
+    public AjaxResult getParentTabs() throws Exception {
+        AjaxResult ajax = AjaxResult.success();
+        var api = new K3CloudApi();
+//        String json = "{\n" +
+//                "    \"FormId\": \"SAL_MATERIALGROUP\",\n" +
+//                "    \"FieldKeys\": \"fid,fname\",\n" +
+//                "    \"OrderString\": \"\",\n" +
+//                "    \"TopRowCount\": 0,\n" +
+//                "    \"StartRow\": 0,\n" +
+//                "    \"Limit\": 2000,\n" +
+//                "    \"SubSystemId\": \"\"\n" +
+//                "}";
+        HashMap map = new HashMap();
+        map.put("FormId", "SAL_MATERIALGROUP");
+        map.put("FieldKeys", "fid as id,fname as name");
+        map.put("FilterString", "FPARENTID = 0");
 
         String result = api.billQuery(JSONUtil.toJsonStr(map));
 
