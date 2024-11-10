@@ -150,9 +150,18 @@ public class SysApplyGoodsController {
         Boolean bool = submitResult.getJSONObject("Result").getJSONObject("ResponseStatus").getBool("IsSuccess");
         if (bool){
             System.out.println(result);
-            api.audit("DE_SCMS_ApplyGools", JSONUtil.toJsonStr(map));
+            String auditApplyGools = api.audit("DE_SCMS_ApplyGools", JSONUtil.toJsonStr(map));
+            JSONObject auditResult = JSONUtil.parseObj(auditApplyGools);
+            Boolean auditResultBool = submitResult.getJSONObject("Result").getJSONObject("ResponseStatus").getBool("IsSuccess");
+            if (auditResultBool){
+                ajax.put("result", auditResult);
+                return ajax;
+            }
+            String auditError =  auditResult.getJSONObject("Result").getJSONObject("ResponseStatus").getJSONArray("Errors").toString();
+            return AjaxResult.error(auditError);
         }
-        return ajax.put("result", result);
+        String error =  submitResult.getJSONObject("Result").getJSONObject("ResponseStatus").getJSONArray("Errors").toString();
+        return AjaxResult.error(error);
     }
     @PostMapping("unAuditBill")
     public AjaxResult unAuditBill(@RequestBody BillNumberList list) throws Exception {
@@ -160,7 +169,13 @@ public class SysApplyGoodsController {
         HashMap map = new HashMap();
         map.put("Numbers", list.getNumberList());
         String result = api.unAudit("DE_SCMS_ApplyGools", JSONUtil.toJsonStr(map));
-        return ajax.put("result", result);
+        JSONObject unAuditResult = JSONUtil.parseObj(result);
+        Boolean bool = unAuditResult.getJSONObject("Result").getJSONObject("ResponseStatus").getBool("IsSuccess");
+        if (bool){
+            return ajax.put("result", unAuditResult);
+        }
+        String error =  unAuditResult.getJSONObject("Result").getJSONObject("ResponseStatus").getJSONArray("Errors").toString();
+        return AjaxResult.error(error);
     }
     @GetMapping("queryBill")
     public AjaxResult queryBill(@RequestParam String billNumber) throws Exception {
