@@ -45,16 +45,7 @@ public class SysMaterialController {
     @GetMapping("/getTabs")
     public AjaxResult getTabs() throws Exception {
         AjaxResult ajax = AjaxResult.success();
-        var api = new K3CloudApi();
-//        String json = "{\n" +
-//                "    \"FormId\": \"SAL_MATERIALGROUP\",\n" +
-//                "    \"FieldKeys\": \"fid,fname\",\n" +
-//                "    \"OrderString\": \"\",\n" +
-//                "    \"TopRowCount\": 0,\n" +
-//                "    \"StartRow\": 0,\n" +
-//                "    \"Limit\": 2000,\n" +
-//                "    \"SubSystemId\": \"\"\n" +
-//                "}";
+
         HashMap map = new HashMap();
         map.put("FormId", "SAL_MATERIALGROUP");
         map.put("FieldKeys", "fid as id,fname as name,fparentId as parent");
@@ -83,16 +74,7 @@ public class SysMaterialController {
     @GetMapping("/getTabsByGroupId")
     public AjaxResult getTabsByGroupId(@RequestParam String pid) throws Exception {
         AjaxResult ajax = AjaxResult.success();
-        var api = new K3CloudApi();
-//        String json = "{\n" +
-//                "    \"FormId\": \"SAL_MATERIALGROUP\",\n" +
-//                "    \"FieldKeys\": \"fid,fname\",\n" +
-//                "    \"OrderString\": \"\",\n" +
-//                "    \"TopRowCount\": 0,\n" +
-//                "    \"StartRow\": 0,\n" +
-//                "    \"Limit\": 2000,\n" +
-//                "    \"SubSystemId\": \"\"\n" +
-//                "}";
+
         HashMap map = new HashMap();
         map.put("FormId", "SAL_MATERIALGROUP");
         map.put("FieldKeys", "fid as id,fname as name");
@@ -107,16 +89,7 @@ public class SysMaterialController {
     @GetMapping("/getChildTabs")
     public AjaxResult getChildTabs(@RequestParam String pid) throws Exception {
         AjaxResult ajax = AjaxResult.success();
-        var api = new K3CloudApi();
-//        String json = "{\n" +
-//                "    \"FormId\": \"SAL_MATERIALGROUP\",\n" +
-//                "    \"FieldKeys\": \"fid,fname\",\n" +
-//                "    \"OrderString\": \"\",\n" +
-//                "    \"TopRowCount\": 0,\n" +
-//                "    \"StartRow\": 0,\n" +
-//                "    \"Limit\": 2000,\n" +
-//                "    \"SubSystemId\": \"\"\n" +
-//                "}";
+
         HashMap map = new HashMap();
         map.put("FormId", "SAL_MATERIALGROUP");
         map.put("FieldKeys", "fid as id,fname as name");
@@ -133,15 +106,7 @@ public class SysMaterialController {
     public AjaxResult getParentTabs() throws Exception {
         AjaxResult ajax = AjaxResult.success();
         var api = new K3CloudApi();
-//        String json = "{\n" +
-//                "    \"FormId\": \"SAL_MATERIALGROUP\",\n" +
-//                "    \"FieldKeys\": \"fid,fname\",\n" +
-//                "    \"OrderString\": \"\",\n" +
-//                "    \"TopRowCount\": 0,\n" +
-//                "    \"StartRow\": 0,\n" +
-//                "    \"Limit\": 2000,\n" +
-//                "    \"SubSystemId\": \"\"\n" +
-//                "}";
+
         HashMap map = new HashMap();
         map.put("FormId", "SAL_MATERIALGROUP");
         map.put("FieldKeys", "fid as id,fname as name");
@@ -153,64 +118,64 @@ public class SysMaterialController {
         return ajax;
     }
 
-    @SaCheckLogin
-    @GetMapping("/getMaterialByTab")
-    public AjaxResult getMaterialByTab(@RequestParam String groupId, @RequestParam Integer page,
-                                       @RequestParam Integer pageSize) throws Exception {
-        AjaxResult ajax = AjaxResult.success();
-//        var api = new K3CloudApi();
-        CloudUser cloudUser =  (CloudUser)StpUtil.getSession().get("user");
+//    @SaCheckLogin
+//    @GetMapping("/getMaterialByTab")
+//    public AjaxResult getMaterialByTab(@RequestParam String groupId, @RequestParam Integer page,
+//                                       @RequestParam Integer pageSize) throws Exception {
+//        AjaxResult ajax = AjaxResult.success();
+//
+//        CloudUser cloudUser =  (CloudUser)StpUtil.getSession().get("user");
+//
+//        HashMap map = new HashMap();
+//        map.put("FormId", "BD_Material");
+//        map.put("FieldKeys", "FMATERIALID as id, FBaseUnitId.FNAME as unit," +
+//                "FMaterialGroup as groupId,FNumber as number,FName as name," +
+//                "FCreateOrgId as createOrgId,FUseOrgId as useOrgId");
+//        map.put("FilterString", "FUseOrgId='"+cloudUser.getUseOrgId()+"' and "+"FMaterialGroup='"+groupId+"'");
+//
+//        map.put("StartRow", (page-1)*pageSize);
+//        map.put("Limit", pageSize);
+//
+//        String result = api.billQuery(JSONUtil.toJsonStr(map));
+//
+//        JSON entries = JSONUtil.parse(result);
+//        JSONArray objects = JSONUtil.parseArray(entries);
+//        for (int i = 0; i < objects.size(); i++) {
+//            JSONObject jsonObject = objects.getJSONObject(i);
+//            jsonObject.set("nums", 0);
+//            jsonObject.set("price", 0);
+//            jsonObject.set("storageNums", 0);
+//            jsonObject.set("storageInTransitNums", 0);
+//            jsonObject.set("step", 1);
+//        }
+//        ajax.put("result", objects);
+//        return ajax;
+//    }
 
-        HashMap map = new HashMap();
-        map.put("FormId", "BD_Material");
-        map.put("FieldKeys", "FMATERIALID as id, FBaseUnitId.FNAME as unit," +
-                "FMaterialGroup as groupId,FNumber as number,FName as name," +
-                "FCreateOrgId as createOrgId,FUseOrgId as useOrgId");
-        map.put("FilterString", "FUseOrgId='"+cloudUser.getUseOrgId()+"' and "+"FMaterialGroup='"+groupId+"'");
-
-        map.put("StartRow", (page-1)*pageSize);
-        map.put("Limit", pageSize);
-
-        String result = api.billQuery(JSONUtil.toJsonStr(map));
-
-        JSON entries = JSONUtil.parse(result);
-        JSONArray objects = JSONUtil.parseArray(entries);
-        for (int i = 0; i < objects.size(); i++) {
-            JSONObject jsonObject = objects.getJSONObject(i);
-            jsonObject.set("nums", 0);
-            jsonObject.set("price", 0);
-            jsonObject.set("storageNums", 0);
-            jsonObject.set("storageInTransitNums", 0);
-            jsonObject.set("step", 1);
-        }
-        ajax.put("result", objects);
-        return ajax;
-    }
 
 
-
-    @SaCheckLogin
-    @GetMapping("/getMaterialByTabV2")
-    public AjaxResult getMaterialByTabV2(@RequestParam String groupId, @RequestParam Integer page,
-                                       @RequestParam Integer pageSize) throws Exception {
-        AjaxResult ajax = AjaxResult.success();
-        SaSession session = StpUtil.getSession();
-        List<Map<String, Object>> maps = new ArrayList<>();
-        CloudUser user = (CloudUser)session.get("user");
-//        String formatSql = String.format(SqlConst.MATERIAL_LIMIT, user.getLoginName(), groupId, page, pageSize, pageSize);
-
-        Map<String, Object> f = new HashMap<>();
-        f.put("cardNo", user.getLoginName());
-        f.put("useOrgId", user.getUseOrgId());
-        f.put("groupId", groupId);
-        f.put("pageNumber", page);
-        f.put("pageSize", pageSize);
-        String formatSql = StrUtil.format(SqlConst.MATERIAL_LIMIT, f);
-        maps = cloudLoginUtil.execSql(formatSql);
-
-        ajax.put("result", maps);
-        return ajax;
-    }
+//    @SaCheckLogin
+//    @GetMapping("/getMaterialByTabV2")
+//    public AjaxResult getMaterialByTabV2(@RequestParam String groupId, @RequestParam Integer page,
+//                                       @RequestParam Integer pageSize) throws Exception {
+//        AjaxResult ajax = AjaxResult.success();
+//        SaSession session = StpUtil.getSession();
+//        List<Map<String, Object>> maps = new ArrayList<>();
+//        CloudUser user = (CloudUser)session.get("user");
+////        String formatSql = String.format(SqlConst.MATERIAL_LIMIT, user.getLoginName(), groupId, page, pageSize, pageSize);
+//
+//        Map<String, Object> f = new HashMap<>();
+//        f.put("cardNo", user.getLoginName());
+//        f.put("useOrgId", user.getUseOrgId());
+//        f.put("groupId", groupId);
+//        f.put("pageNumber", page);
+//        f.put("pageSize", pageSize);
+//        String formatSql = StrUtil.format(SqlConst.MATERIAL_LIMIT, f);
+//        maps = cloudLoginUtil.execSql(formatSql);
+//
+//        ajax.put("result", maps);
+//        return ajax;
+//    }
 
 
     @SaCheckLogin
@@ -259,32 +224,32 @@ public class SysMaterialController {
         ajax.put("result", maps);
         return ajax;
     }
+//    @SaCheckLogin
+//    @GetMapping("/getMaterialByNameV2")
+//    public AjaxResult getMaterialByNameV2(@RequestParam String name, @RequestParam Integer page,
+//                                        @RequestParam Integer pageSize) throws Exception {
+//        AjaxResult ajax = AjaxResult.success();
+//        SaSession session = StpUtil.getSession();
+//        List<Map<String, Object>> maps = new ArrayList<>();
+//        CloudUser user = (CloudUser)session.get("user");
+////        String formatSql = String.format(SqlConst.MATERIAL_LIMIT, user.getLoginName(), groupId, page, pageSize, pageSize);
+//
+//        Map<String, Object> f = new HashMap<>();
+//        f.put("cardNo", user.getLoginName());
+//        f.put("useOrgId", user.getUseOrgId());
+//        f.put("likeTxt", name);
+//        f.put("pageNumber", page);
+//        f.put("pageSize", pageSize);
+//        String formatSql = StrUtil.format(SqlConst.MATERIAL_LIMIT_MATCH_NAME, f);
+//        maps = cloudLoginUtil.execSql(formatSql);
+//
+//        ajax.put("result", maps);
+//        return ajax;
+//    }
+
     @SaCheckLogin
-    @GetMapping("/getMaterialByNameV2")
-    public AjaxResult getMaterialByNameV2(@RequestParam String name, @RequestParam Integer page,
-                                        @RequestParam Integer pageSize) throws Exception {
-        AjaxResult ajax = AjaxResult.success();
-        SaSession session = StpUtil.getSession();
-        List<Map<String, Object>> maps = new ArrayList<>();
-        CloudUser user = (CloudUser)session.get("user");
-//        String formatSql = String.format(SqlConst.MATERIAL_LIMIT, user.getLoginName(), groupId, page, pageSize, pageSize);
-
-        Map<String, Object> f = new HashMap<>();
-        f.put("cardNo", user.getLoginName());
-        f.put("useOrgId", user.getUseOrgId());
-        f.put("likeTxt", name);
-        f.put("pageNumber", page);
-        f.put("pageSize", pageSize);
-        String formatSql = StrUtil.format(SqlConst.MATERIAL_LIMIT_MATCH_NAME, f);
-        maps = cloudLoginUtil.execSql(formatSql);
-
-        ajax.put("result", maps);
-        return ajax;
-    }
-
-    @SaCheckLogin
-    @GetMapping("/getMaterialAddedV2")
-    public AjaxResult getMaterialAddedV2(@RequestParam Integer page,
+    @GetMapping("/getMaterialAddedV2/{tempNo}")
+    public AjaxResult getMaterialAddedV2(@PathVariable String tempNo, @RequestParam Integer page,
                                           @RequestParam Integer pageSize) throws Exception {
         AjaxResult ajax = AjaxResult.success();
         SaSession session = StpUtil.getSession();
@@ -295,6 +260,7 @@ public class SysMaterialController {
         Map<String, Object> f = new HashMap<>();
         f.put("cardNo", user.getLoginName());
         f.put("useOrgId", user.getUseOrgId());
+        f.put("tempNo", tempNo);
         f.put("pageNumber", page);
         f.put("pageSize", pageSize);
         String formatSql = StrUtil.format(SqlConst.MATERIAL_AREADY_ADDED, f);
@@ -306,8 +272,8 @@ public class SysMaterialController {
 
 
     @SaCheckLogin
-    @PostMapping("/addOrUpDateShopV2")
-    public AjaxResult addOrUpDateShopV2(@RequestBody Material material) throws Exception {
+    @PostMapping("/addOrUpDateShopV2/{tempNo}")
+    public AjaxResult addOrUpDateShopV2(@PathVariable String tempNo, @RequestBody Material material) throws Exception {
         AjaxResult ajax = AjaxResult.success();
         SaSession session = StpUtil.getSession();
         CloudUser user = (CloudUser)session.get("user");
@@ -315,6 +281,7 @@ public class SysMaterialController {
         Map<String, Object> f = new HashMap<>();
         f.put("cardNo", user.getLoginName());
         f.put("materialId", material.getId());
+        f.put("tempNo", tempNo);
         String formatSql = StrUtil.format(SqlConst.SHOR_CART_DELETE, f);
         cloudLoginUtil.execSqlNoReturn(formatSql);
 //        {billNo}, 'C', {userId}, {nowDate}, {cardNo}, {materialId}, {nums}
@@ -332,14 +299,15 @@ public class SysMaterialController {
         return ajax;
     }
     @SaCheckLogin
-    @GetMapping("/clearShopV2")
-    public AjaxResult clearShopV2() throws Exception {
+    @GetMapping("/clearShopV2/{tempNo}")
+    public AjaxResult clearShopV2(@PathVariable String tempNo) throws Exception {
         AjaxResult ajax = AjaxResult.success();
         SaSession session = StpUtil.getSession();
         CloudUser user = (CloudUser)session.get("user");
 
         Map<String, Object> f = new HashMap<>();
         f.put("cardNo", user.getLoginName());
+        f.put("tempNo", tempNo);
         String formatSql = StrUtil.format(SqlConst.SHOR_CART_CLEAR, f);
         cloudLoginUtil.execSqlNoReturn(formatSql);
 

@@ -59,7 +59,7 @@ public class SqlConst {
             "left  JOIN T_BD_MATERIALBASE on T_BD_MATERIALBASE.FMATERIALID = UNW_t_Cust_Entry100009.F_UC_WL " +
             "left  JOIN T_BD_UNIT on T_BD_UNIT.FUNITID = T_BD_MATERIALBASE.FBaseUnitId " +
             "left  JOIN T_BD_UNIT_L on T_BD_UNIT_L.FUNITID = T_BD_MATERIALBASE.FBaseUnitId and T_BD_UNIT_L.FLOCALEID = '2052' " +
-            "left  JOIN UNW_t_Cust100004 on  UNW_t_Cust_Entry100009.F_UC_WL = UNW_t_Cust100004.F_UC_WL1  and UNW_t_Cust100004.F_UC_CARDNO = '{cardNo}' " +
+            "left  JOIN UNW_t_Cust100004 on  UNW_t_Cust_Entry100009.F_UC_WL = UNW_t_Cust100004.F_UC_WL1  and UNW_t_Cust100004.F_UC_CARDNO = '{cardNo}'  and UNW_t_Cust100004.F_UC_tempNo = '{billNo}'" +
             "WHERE t_bd_material.FUseOrgId = '{useOrgId}' and FMaterialGroup= '{groupId}' " +
             "ORDER BY t_bd_material.FMATERIALID " +
             "OFFSET ({pageNumber} - 1) * {pageSize} ROWS " +
@@ -147,14 +147,14 @@ public class SqlConst {
             "left  JOIN T_BD_MATERIALBASE on T_BD_MATERIALBASE.FMATERIALID = UNW_t_Cust100004.F_UC_WL1 " +
             "left  JOIN T_BD_UNIT_L on T_BD_UNIT_L.FUNITID = T_BD_MATERIALBASE.FBaseUnitId " +
             "left  JOIN T_BD_UNIT on T_BD_UNIT.FUNITID = T_BD_MATERIALBASE.FBaseUnitId " +
-            "WHERE UNW_t_Cust100004.F_UC_CARDNO = '{cardNo}' and t_bd_material.FUseOrgId = '{useOrgId}' " +
+            "WHERE UNW_t_Cust100004.F_UC_CARDNO = '{cardNo}' and t_bd_material.FUseOrgId = '{useOrgId}' and UNW_t_Cust100004.F_UC_tempNo = '{tempNo}' " +
             "ORDER BY t_bd_material.FMATERIALID " +
             "OFFSET ({pageNumber} - 1) * {pageSize} ROWS " +
             "FETCH NEXT {pageSize} ROWS ONLY";
 
-    public final static String SHOR_CART_INSERT = "INSERT INTO UNW_t_Cust100004 (FID,FBILLNO, FDOCUMENTSTATUS, F_UC_YG, F_UC_DATE, F_UC_CARDNO, F_UC_WL1, F_UC_QTY1)" +
-            " VALUES ({billId},'{billNo}', 'C', '{userId}', '{nowDate}', '{cardNo}', {materialId}, {nums});";
-    public final static String SHOR_CART_DELETE = "delete from UNW_t_Cust100004 where F_UC_CARDNO = {cardNo} and F_UC_WL1 = {materialId} ";
-    public final static String SHOR_CART_CLEAR = "delete from UNW_t_Cust100004 where F_UC_CARDNO = {cardNo}";
+    public final static String SHOR_CART_INSERT = "INSERT INTO UNW_t_Cust100004 (FID,FBILLNO, FDOCUMENTSTATUS, F_UC_YG, F_UC_DATE, F_UC_CARDNO, F_UC_WL1, F_UC_QTY1, F_UC_tempNo)" +
+            " VALUES ({billId},'{billNo}', 'C', '{userId}', '{nowDate}', '{cardNo}', {materialId}, {nums}, {tempNo});";
+    public final static String SHOR_CART_DELETE = "delete from UNW_t_Cust100004 where F_UC_CARDNO = {cardNo} and F_UC_WL1 = {materialId} and F_UC_tempNo = '{tempNo}'";
+    public final static String SHOR_CART_CLEAR = "delete from UNW_t_Cust100004 where F_UC_CARDNO = {cardNo} and F_UC_tempNo = '{tempNo}'";
 
 }
