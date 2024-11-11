@@ -24,6 +24,7 @@ public class ApplyGoodsModel {
     private boolean FDeliveryControl;
     private boolean FIsAgentPurchase;
     private String FGoodsStatus;
+    private String FNote;
     private boolean FIsRushOrder;
     private ArrayList<ApplyGoodsBillEntry> FEntity;
 

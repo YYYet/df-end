@@ -71,6 +71,7 @@ public class CloudLoginUtil {
             List<List<Map<String, Object>>> list = (List<List<Map<String, Object>>>)dataResult.getData();
             return list.get(0);
         } else {
+            System.out.println(dataResult);
             throw new RuntimeException(dataResult.getMessage());
         }
 
