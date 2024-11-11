@@ -243,7 +243,6 @@ public class SysMaterialController {
 //        f.put("pageSize", pageSize);
 //        String formatSql = StrUtil.format(SqlConst.MATERIAL_LIMIT_MATCH_NAME, f);
 //        maps = cloudLoginUtil.execSql(formatSql);
-//
 //        ajax.put("result", maps);
 //        return ajax;
 //    }
