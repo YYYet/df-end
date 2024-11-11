@@ -213,6 +213,7 @@ public class SysApplyGoodsController {
             newEntryObj.set("id", item.getInt("Id"));
             newEntryObj.set("unitName", item.getJSONObject("UnitID").getJSONArray("Name").getJSONObject(0).getStr("Value"));
             newEntryObj.set("materialName", item.getJSONObject("MaterialId").getJSONArray("Name").getJSONObject(0).getStr("Value"));
+            newEntryObj.set("materialId", item.getJSONObject("MaterialId").getInt("Id"));
             newEntryObj.set("qty", item.getInt("ReqQty"));
             newEntryObj.set("arrivalDate", item.getDate("ArrivalDate"));
             newEntry.add(newEntryObj);
