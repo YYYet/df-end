@@ -143,6 +143,9 @@ public class GlobalExceptionHandler
     {
         String requestURI = request.getRequestURI();
         log.error("请求地址'{}',发生未知异常.", requestURI, e);
+        if (e.getMessage().equals("未将对象引用设置到对象的实例。")){
+            return AjaxResult.error(401, "登录状态已过期。");
+        }
         return AjaxResult.error(e.getMessage());
     }
 

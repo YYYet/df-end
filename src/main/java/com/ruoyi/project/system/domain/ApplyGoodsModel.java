@@ -18,6 +18,8 @@ public class ApplyGoodsModel {
     private BillNumberEntity FCurrencyId;
     private BillNumberEntity FReceiveOrgId;
     private String FAppDate;
+    private String F_UC_tempName;
+    private String F_UC_tempNo;
     private boolean FIsIncludedTax;
     private boolean FIsOfflinePay;
     private String FMobileOrderType;

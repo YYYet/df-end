@@ -1,6 +1,7 @@
 package com.ruoyi.common.utils.cloud.util;
 
 import cn.dev33.satoken.stp.StpUtil;
+import cn.hutool.json.JSONUtil;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.ruoyi.common.utils.cloud.api.CloudConnect;
@@ -71,7 +72,11 @@ public class CloudLoginUtil {
             List<List<Map<String, Object>>> list = (List<List<Map<String, Object>>>)dataResult.getData();
             return list.get(0);
         } else {
-            System.out.println(dataResult);
+            System.out.println(JSONUtil.toJsonStr(dataResult));
+            String message = dataResult.getMessage();
+//            if (message.equals("未将对象引用设置到对象的实例。")){
+//
+//            }
             throw new RuntimeException(dataResult.getMessage());
         }
 

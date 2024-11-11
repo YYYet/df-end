@@ -191,6 +191,9 @@ public class SysApplyGoodsController {
         JSONObject newBill = new JSONObject();
         newBill.set("extra","货品订货-特殊请购\n\r (7:00-22:00)");
 
+        newBill.set("tempNo", bill.getStr("F_UC_tempNo"));
+        newBill.set("tempName", bill.getStr("F_UC_tempName"));
+        newBill.set("id", bill.getInt("Id"));
         newBill.set("arrivalTime","0:00");
         newBill.set("agent","18888888888");
         newBill.set("note",bill.getStr("Note"));
@@ -292,6 +295,8 @@ public class SysApplyGoodsController {
         ApplyGoodsModel model = ApplyGoodsModel.builder().FID(0).FBillTypeID(new BillNumberEntity("YH01_JGLYHSQ"))
                 .FRequestType("Material")
                 .FNote(bill.getNote())
+                .F_UC_tempName(bill.getTempName())
+                .F_UC_tempNo(bill.getTempNo())
                 .FApplicationOrgId(new BillNumberEntity(bill.getApplyOrgNumber())).FCurrencyId(new BillNumberEntity("PRE001"))
                 .FReceiveOrgId(new BillNumberEntity(bill.getReviceOrgNumber())).FAppDate(DateUtil.now()).FIsIncludedTax(false)
                 .FIsOfflinePay(false).FMobileOrderType("1").FDeliveryControl(false).FIsAgentPurchase(false).FGoodsStatus("F")

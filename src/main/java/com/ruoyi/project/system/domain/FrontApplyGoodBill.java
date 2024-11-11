@@ -10,6 +10,8 @@ public class FrontApplyGoodBill {
     private String arrivalDate;
     private String applyOrgNumber;
     private String reviceOrgNumber;
+    private String tempName;
+    private String tempNo;
     private String note;
     private ArrayList<FrontApplyGoodEntry> entry;
 }
