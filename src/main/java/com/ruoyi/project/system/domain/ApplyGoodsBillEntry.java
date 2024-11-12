@@ -8,6 +8,7 @@ import lombok.*;
 @NoArgsConstructor
 @ToString
 public class ApplyGoodsBillEntry {
+    private int FEntryID;
     private BillNumberEntity FMaterialId;
     private BillNumberEntity FUnitId;
     private double FMaxPOQty;

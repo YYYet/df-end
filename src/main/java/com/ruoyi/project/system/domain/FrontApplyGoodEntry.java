@@ -11,11 +11,12 @@ public class FrontApplyGoodEntry {
 
     private Integer createOrgId;
     private Integer groupId;
-    private Integer id;
-    private String name;
-    private String number;
+    private Integer materialId;
+    private int entryId;
+    private String materialName;
+    private String materialNumber;
     private Integer nums;
-    private String unit;
+    private String unitName;
     private String unitNumber;
     private Integer unitID;
     private Integer useOrgId;

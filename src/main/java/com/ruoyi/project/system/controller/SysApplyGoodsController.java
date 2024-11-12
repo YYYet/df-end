@@ -9,12 +9,15 @@ import cn.hutool.json.JSONArray;
 import cn.hutool.json.JSONObject;
 import cn.hutool.json.JSONUtil;
 import com.kingdee.bos.webapi.sdk.K3CloudApi;
+import com.ruoyi.common.utils.KingdeeResultUtil;
 import com.ruoyi.common.utils.StringUtils;
 import com.ruoyi.common.utils.cloud.util.CloudLoginUtil;
 import com.ruoyi.framework.config.KingdeeCloudConfig;
 import com.ruoyi.framework.security.LoginBody;
 import com.ruoyi.framework.web.domain.AjaxResult;
 import com.ruoyi.project.system.domain.*;
+import com.ruoyi.project.system.service.ApplyGoodService;
+import com.ruoyi.project.system.service.impl.ApplyGoodServiceImpl;
 import com.ruoyi.project.system.service.impl.OrderTemplateServiceImpl;
 import com.ruoyi.project.system.service.impl.WarehouseServiceImpl;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -33,8 +36,12 @@ public class SysApplyGoodsController {
 
     @Resource
     CloudLoginUtil cloudLoginUtil;
+
     @Resource
-    KingdeeCloudConfig config;
+    ApplyGoodServiceImpl applyGoodService;
+
+    @Resource
+    KingdeeResultUtil kingdeeResultUtil;
 
 
 
@@ -177,6 +184,7 @@ public class SysApplyGoodsController {
         String error =  unAuditResult.getJSONObject("Result").getJSONObject("ResponseStatus").getJSONArray("Errors").toString();
         return AjaxResult.error(error);
     }
+
     @GetMapping("queryBill")
     public AjaxResult queryBill(@RequestParam String billNumber) throws Exception {
         AjaxResult ajax = AjaxResult.success();
@@ -203,6 +211,8 @@ public class SysApplyGoodsController {
         newBill.set("distributionOrg", entry.getJSONObject(0).getJSONObject("FDispatchOrgIdDetail").getJSONArray("Name").getJSONObject(0).getStr("Value"));
         newBill.set("billNumber", bill.getStr("BillNo"));
         newBill.set("applyOrgName", bill.getJSONObject("ApplicationOrgId").getJSONArray("Name").getJSONObject(0).getStr("Value"));
+        newBill.set("applyOrgNumber", bill.getJSONObject("ApplicationOrgId").getStr("Number"));
+        newBill.set("applyOrgId", bill.getJSONObject("ApplicationOrgId").getInt("Id"));
         newBill.set("status",  bill.getStr("DocumentStatus"));
         newBill.set("createDate", bill.getDate("CreateDate"));
         newBill.set("creator", bill.getJSONObject("CreatorId").getStr("Name"));
@@ -212,7 +222,10 @@ public class SysApplyGoodsController {
             JSONObject newEntryObj = new JSONObject();
             newEntryObj.set("id", item.getInt("Id"));
             newEntryObj.set("unitName", item.getJSONObject("UnitID").getJSONArray("Name").getJSONObject(0).getStr("Value"));
+            newEntryObj.set("unitId", item.getJSONObject("BaseUnitId").getInt("Id"));
+            newEntryObj.set("unitNumber", item.getJSONObject("BaseUnitId").getStr("Number"));
             newEntryObj.set("materialName", item.getJSONObject("MaterialId").getJSONArray("Name").getJSONObject(0).getStr("Value"));
+            newEntryObj.set("materialNumber", item.getJSONObject("MaterialId").getStr("Number"));
             newEntryObj.set("materialId", item.getJSONObject("MaterialId").getInt("Id"));
             newEntryObj.set("qty", item.getInt("ReqQty"));
             newEntryObj.set("arrivalDate", item.getDate("ArrivalDate"));
@@ -232,108 +245,37 @@ public class SysApplyGoodsController {
 
         System.out.println("bill  "+bill);
 
-
-        ArrayList<ApplyGoodsBillEntry> applyGoodsBillEntries = new ArrayList<>();
-
-        ArrayList<FrontApplyGoodEntry> entry = bill.getEntry();
-        for (FrontApplyGoodEntry item : entry) {
-            if (item.getNums() == 0){
-                continue;
-            }
-            System.out.println(item.toString());
-            applyGoodsBillEntries.add(ApplyGoodsBillEntry.builder().FMaterialId(new BillNumberEntity(item.getNumber()))
-                    .FUnitId(new BillNumberEntity(item.getUnitNumber()))
-                    .FMaxPOQty(100000.0000000000)
-                    .FMinPOQty(0.0)
-                    .FIncreaseQty(0.0)
-                    .FReqQty(item.getNums())
-                    .FApproveQty(item.getNums())
-                    .FLeadTime(0)
-                    .FAuxQty(0.0)
-                    // 建议配送日期
-//                .FSuggestPurDate("2024-11-07 00:00:00")
-                    .FExtAuxQty(0.0)
-                    .FApplyBaseQty(item.getNums())
-                    .FLowLimitePrice(0.0)
-                    // 到货日期
-                    .FArrivalDate(bill.getArrivalDate())
-                    .FSrcBillTypeId("")
-                    .FBaseUnitId(new BillNumberEntity(item.getUnitNumber()))
-                    .FActualApproveQty(0.0)
-                    .FActualApproveBaseQty(0.0)
-                    .FJNSumQty(0.0)
-                    .FAUXCDSumJNQty(0.0)
-                    .FConversionRate(0.0)
-                    .FSrcBillNo("")
-                    // 配送组织
-                    .FDispatchOrgIdDetail(new BillNumberEntity(config.getDistributionCenterCode()))
-                    .FIsPurchase("0")
-                    .FIsProduce("0")
-                    .FDeliveryMaxQty(item.getNums())
-                    .FBaseDeliveryMaxQty(item.getNums())
-                    .FISPresent(false)
-                    .FTaxPrice(0.0)
-                    .FTaxAmount(0.0)
-                    .FTaxRate(0.0)
-                    .FAllAmount(0.0)
-                    .FAllAmount_LC(0.0)
-                    .FDetailIntax(false)
-                    .FIsSelfPurchase("1")
-                    .FOWNERTYPEID("BD_OwnerOrg")
-                    .FOWNERID(new BillNumberEntity(config.getDistributionCenterCode()))
-                    .FKEEPERTYPEID("BD_KeeperOrg")
-                    .FKEEPERID(new BillNumberEntity(config.getDistributionCenterCode()))
-                    .FExpectQty(0.0)
-                    .FProductJNQty(0.0)
-                    .FRowGoodsStatus("F")
-                    .build());
-        }
-
-
-
-
-
-        ApplyGoodsModel model = ApplyGoodsModel.builder().FID(0).FBillTypeID(new BillNumberEntity("YH01_JGLYHSQ"))
-                .FRequestType("Material")
-                .FNote(bill.getNote())
-                .F_UC_tempName(bill.getTempName())
-                .F_UC_tempNo(bill.getTempNo())
-                .FApplicationOrgId(new BillNumberEntity(bill.getApplyOrgNumber())).FCurrencyId(new BillNumberEntity("PRE001"))
-                .FReceiveOrgId(new BillNumberEntity(bill.getReviceOrgNumber())).FAppDate(DateUtil.now()).FIsIncludedTax(false)
-                .FIsOfflinePay(false).FMobileOrderType("1").FDeliveryControl(false).FIsAgentPurchase(false).FGoodsStatus("F")
-                .FIsRushOrder(false).FEntity(applyGoodsBillEntries).build();
-
-
-
-
-
-
-
-        ApplyGoodsBill applyGoodsBill = ApplyGoodsBill
-                .builder()
-                .IsDeleteEntry("true")
-                .SubSystemId("")
-                .IsVerifyBaseDataField("false")
-                .IsEntryBatchFill("true")
-                .ValidateFlag("true").NumberSearch("true")
-                .IsAutoAdjustField("true").InterationFlags("").IgnoreInterationFlag("")
-                .IsControlPrecision("false")
-                .ValidateRepeatJson("false")
-                .Model(model).build();
-
+        ApplyGoodsBill applyGoodsBill = applyGoodService.buildSaveOrUpdateDto(false, bill);
 
         System.out.println(JSONUtil.toJsonStr(applyGoodsBill));
         String deScmsApplyGools = api.save("DE_SCMS_ApplyGools", JSONUtil.toJsonStr(applyGoodsBill));
-        JSONObject result = JSONUtil.parseObj(deScmsApplyGools);
-        if (result.getJSONObject("Result").getJSONObject("ResponseStatus").getBool("IsSuccess")){
-            success.put("result", result);
+        JSONObject responseStatus = kingdeeResultUtil.getResponseStatus(deScmsApplyGools);
+        if (responseStatus.getBool("IsSuccess")){
+            success.put("result", responseStatus);
         }else {
-            String error =  result.getJSONObject("Result").getJSONObject("ResponseStatus").getJSONArray("Errors").toString();
+            String error =  responseStatus.getJSONArray("Errors").toString();
             return AjaxResult.error(error);
         }
-
-
         return success;
     }
 
+    @PostMapping("updateBill")
+    public AjaxResult update(@RequestBody FrontApplyGoodBill bill) throws Exception {
+        AjaxResult success = AjaxResult.success();
+
+        System.out.println("bill  "+bill);
+
+        ApplyGoodsBill applyGoodsBill = applyGoodService.buildSaveOrUpdateDto(true, bill);
+
+        System.out.println(JSONUtil.toJsonStr(applyGoodsBill));
+        String deScmsApplyGools = api.save("DE_SCMS_ApplyGools", JSONUtil.toJsonStr(applyGoodsBill));
+        JSONObject responseStatus = kingdeeResultUtil.getResponseStatus(deScmsApplyGools);
+        if (responseStatus.getBool("IsSuccess")){
+            success.put("result", responseStatus);
+        }else {
+            String error =  responseStatus.getJSONArray("Errors").toString();
+            return AjaxResult.error(error);
+        }
+        return success;
+    }
 }

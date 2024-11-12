@@ -6,7 +6,7 @@ public enum BillStatus {
 
     REVIEWING("待审核", "FDOCUMENTSTATUS = 'B'"),
     REVIEWED("已审核", "FDOCUMENTSTATUS = 'C'"),
-    SAVED("暂存", "(FDOCUMENTSTATUS = 'Z' or FDOCUMENTSTATUS = 'A' or FDOCUMENTSTATUS = 'D' or FDOCUMENTSTATUS = 'B')"),
+    SAVED("保存", "(FDOCUMENTSTATUS = 'Z' or FDOCUMENTSTATUS = 'A' or FDOCUMENTSTATUS = 'D' or FDOCUMENTSTATUS = 'B')"),
     AUDITED("已提交", "FDOCUMENTSTATUS = 'C'"),
 
 //    REREVIEW("重新审核", "D"),

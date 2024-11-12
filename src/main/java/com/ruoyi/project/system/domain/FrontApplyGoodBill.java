@@ -13,5 +13,6 @@ public class FrontApplyGoodBill {
     private String tempName;
     private String tempNo;
     private String note;
+    private int billId;
     private ArrayList<FrontApplyGoodEntry> entry;
 }
